@@ -6,8 +6,7 @@ const nav = [
   {to: '/project',    label: 'Project'},
   {to: '/os',         label: 'OS'},
   {to: '/server',     label: 'Servers'},
-  {to: '/wu',         label: 'WU'},
-  {to: '/cpu',        label: 'CPUs'},
+  {to: '/utils',      label: 'Utils'},
   {to: '/credit-log', label: 'Credit Log'}
 ]
 

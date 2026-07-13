@@ -51,7 +51,6 @@ export default {
 
 <template lang="pug">
 section
-  h1 Recent CPUs
   form.search(@submit.prevent="search")
     input(v-model="query" placeholder="Donor name")
     button(type="submit") Search

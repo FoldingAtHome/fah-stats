@@ -14,8 +14,7 @@ const routes = [
   {path: '/project/:id',      component: () => import('./pages/project-profile.vue'), props: true},
   {path: '/os',               component: () => import('./pages/os.vue')},
   {path: '/server',           component: () => import('./pages/server.vue')},
-  {path: '/wu',               component: () => import('./pages/wu.vue')},
-  {path: '/cpu',              component: () => import('./pages/cpu.vue')},
+  {path: '/utils',            component: () => import('./pages/utils.vue')},
   {path: '/credit-log',       component: () => import('./pages/credit-log.vue')},
   {path: '/:pathMatch(.*)*',  component: () => import('./pages/not-found.vue')}
 ]

@@ -186,15 +186,6 @@ section.servers
   h1 Server Statistics
   load-state(:loading="loading" :error="error" :empty="!servers.length" @retry="load")
     p.timestamp Updated {{ts}}
-    h2 Project Type Stats
-    stat-table(:columns="projectColumns" :rows="projectTypes")
-      template(#summary)
-        tr.summary
-          td Totals
-          td(style="text-align:right") {{num(projectTotals.public)}}
-          td(style="text-align:right") {{num(projectTotals.beta)}}
-          td(style="text-align:right") {{num(projectTotals.total)}}
-          td(style="text-align:right") {{((projectTotals.rate) * 3600).toLocaleString(undefined, {maximumFractionDigits: 2})}}/hr
     h2 Server Stats
     .fullbleed
       stat-table(:columns="serverColumns" :rows="servers" :row-class="rowClass" layout="auto")
@@ -214,6 +205,15 @@ section.servers
           span(v-else) {{row.statusText}}
         template(v-slot:types="{row}")
           span(:title="typeTip(row.types)") {{row.typeList}}
+    h2 Project Type Stats
+    stat-table(:columns="projectColumns" :rows="projectTypes")
+      template(#summary)
+        tr.summary
+          td Totals
+          td(style="text-align:right") {{num(projectTotals.public)}}
+          td(style="text-align:right") {{num(projectTotals.beta)}}
+          td(style="text-align:right") {{num(projectTotals.total)}}
+          td(style="text-align:right") {{((projectTotals.rate) * 3600).toLocaleString(undefined, {maximumFractionDigits: 2})}}/hr
   p.note Hover Errors/Warnings/Has CS/Project Types for details. Jobs can be both beta and public; available jobs and assign rates are estimates.
 </template>
 

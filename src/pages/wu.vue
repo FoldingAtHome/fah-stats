@@ -17,7 +17,7 @@ export default {
   computed: {
     columns() {
       return [
-        {field: 'user', label: 'User', link: row => '/cpu?q=' + encodeURIComponent(row.user)},
+        {field: 'user', label: 'User', link: row => '/utils?tab=cpu&q=' + encodeURIComponent(row.user)},
         {field: 'team', label: 'Team', width: '7em', align: 'right', link: row => '/team/' + row.team},
         {field: 'cpuid', label: 'CPUID', width: '14em', hideMobile: true},
         {field: 'credit', label: 'Credit', width: '8em', align: 'right', format: num},
@@ -54,7 +54,6 @@ export default {
 
 <template lang="pug">
 section
-  h1 Work Unit Status
   form.wu-search(@submit.prevent="search")
     label PRCG
       input(v-model="prcg" placeholder="Project:10433 (Run 1, Clone 1, Gen 1)")

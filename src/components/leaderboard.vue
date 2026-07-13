@@ -106,7 +106,7 @@ section
   load-state(:loading="loading" :error="error" :empty="!rows.length" @retry="load")
     stat-table(:columns="columns" :rows="rows")
       template(v-slot:name="{row}")
-        team-logo(v-if="logo" :logo="logo(row)")
+        team-logo(v-if="logo" :logo="logo(row)" :fallback="false")
         router-link(:to="link(row)") {{row.name}}
       template(v-slot:change="{row}")
         span.change.new(v-if="row._prev == null") NEW
