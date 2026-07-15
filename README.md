@@ -2,7 +2,7 @@
 
 The public statistics site for **[Folding@home](https://foldingathome.org)** —
 a fast, read-only SPA that serves donor, team, project and hardware
-leaderboards. A from-scratch rebuild of `https://stats.foldingathome.org/`.
+leaderboards.
 
 The site is a statically built, client-rendered Vue app: nginx serves the
 bundle and the browser fetches all data live from the Folding@home API. There is
