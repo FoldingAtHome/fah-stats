@@ -44,6 +44,26 @@ export async function api(path, params) {
 }
 
 
+// Non-GET request (the passkey tool's write). Not cached; surfaces the API's
+// {error} body message when present, else falls back to the HTTP status.
+export async function apiSend(path, method, body) {
+  const url = path.startsWith('http') ? path : apiBase + path
+  const res = await fetch(url, {
+    method,
+    headers: body ? {'Content-Type': 'application/json'} : undefined,
+    body:    body ? JSON.stringify(body) : undefined
+  })
+  const ct   = res.headers.get('content-type') || ''
+  const data = ct.includes('application/json') ? await res.json() : await res.text()
+  if (!res.ok) {
+    const err = new Error((data && data.error) || 'HTTP ' + res.status)
+    err.status = res.status
+    throw err
+  }
+  return data
+}
+
+
 // Some endpoints (/os, /team/{id}/members) return a [header, ...rows] matrix.
 // Convert to an array of objects keyed by the header row.
 export function matrixToRows(m) {

@@ -1,9 +1,9 @@
 <script>
 const links = [
-  {href: 'https://foldingathome.org',                                 label: 'Folding@home'},
-  {href: 'https://foldingathome.org/start-folding',                   label: 'Download'},
-  {href: 'https://api.foldingathome.org',                             label: 'API'},
-  {href: 'https://github.com/FoldingCommunity/fah-stats-front-end',   label: 'GitHub'}
+  {href: 'https://foldingathome.org',                  label: 'Folding@home'},
+  {href: 'https://github.com/foldingathome/fah-stats', label: 'GitHub'},
+  {href: 'https://api.foldingathome.org',              label: 'API'},
+  {href: 'https://foldingathome.org/download',         label: 'Download'}
 ]
 
 export default {name: 'AppFooter', data: () => ({links})}
@@ -14,7 +14,7 @@ footer.app-footer
   .bar
     nav.links
       a(v-for="l in links" :key="l.href" :href="l.href" target="_blank" rel="noopener") {{l.label}}
-    span.copy © Folding@home
+    span.copy Copyright © Folding@home, 2026
 </template>
 
 <style lang="stylus">

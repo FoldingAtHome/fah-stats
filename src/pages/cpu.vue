@@ -29,8 +29,15 @@ export default {
     }
   },
   created() {
-    document.title = 'Recent CPUs — Folding@home'
     if (this.$route.query.q) {this.query = this.$route.query.q; this.search()}
+  },
+  watch: {
+    '$route.query.q'(q) {
+      if (!q) return
+      this.query = q
+      this.search()
+      this.$el.scrollIntoView({behavior: 'smooth'})
+    }
   },
   methods: {
     dt(v) {const d = toDate(v); return d ? d.toLocaleString() : ''},

@@ -17,7 +17,7 @@ export default {
   computed: {
     columns() {
       return [
-        {field: 'user', label: 'User', link: row => '/utils?tab=cpu&q=' + encodeURIComponent(row.user)},
+        {field: 'user', label: 'User', link: row => '/tools?q=' + encodeURIComponent(row.user)},
         {field: 'team', label: 'Team', width: '7em', align: 'right', link: row => '/team/' + row.team},
         {field: 'cpuid', label: 'CPUID', width: '14em', hideMobile: true},
         {field: 'credit', label: 'Credit', width: '8em', align: 'right', format: num},
@@ -29,7 +29,6 @@ export default {
       ]
     }
   },
-  created() {document.title = 'WU Status — Folding@home'},
   methods: {
     dt(v) {const d = toDate(v); return d ? d.toLocaleString() : ''},
     parsePRCG() {

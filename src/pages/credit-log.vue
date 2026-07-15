@@ -41,19 +41,25 @@ export default {
 </script>
 
 <template lang="pug">
-section
+section.credit-log
   h1 Credit Log
   load-state(:loading="loading" :error="error" :empty="!credits.length" @retry="load")
-    h2 Credits logged per hour
-    line-chart(:series="credits" :x-format="xFmt" :y-format="yFmt")
-    p.note The number of credits entered into the database per hour.
-    h2 Compute hours logged per hour
-    line-chart(:series="hours" :x-format="xFmt" :y-format="yFmt")
-    p.note The number of compute hours logged per hour.
+    .panel
+      h2 Credits logged per hour
+      line-chart(:series="credits" :x-format="xFmt" :y-format="yFmt")
+      p.note The number of credits entered into the database per hour.
+    .panel
+      h2 Compute hours logged per hour
+      line-chart(:series="hours" :x-format="xFmt" :y-format="yFmt")
+      p.note The number of compute hours logged per hour.
 </template>
 
 <style lang="stylus">
 .note
   color $fgMuted
   margin 0.4em 0 $padLoose
+.credit-log .panel + .panel
+  margin-top $gap
+.credit-log .panel .note:last-child
+  margin-bottom 0
 </style>

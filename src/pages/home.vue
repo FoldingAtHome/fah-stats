@@ -50,20 +50,24 @@ section.home
     .lede
       flex 1 1 320px
   .maximize
-    line-height 1.1
+    font-family $fontDisplay
+    line-height 3.75rem
     margin 0
     .big
       display block
-      font-size 3rem
+      font-size 5rem
       font-weight 700
+    .ye
+      display block
     .your
+      font-family $fontScript
       color $accent
       font-weight 700
-      font-size 2.4rem
-      margin-right 0.4rem
+      font-size 4.5rem
+      margin-right 1rem
     .effort
       font-weight 700
-      font-size 1.8rem
+      font-size 3rem
   .panel
     margin-top $padLoose
     padding $padLoose
@@ -81,10 +85,12 @@ section.home
   @media (max-width: $bpMobile)
     .panel
       grid-template-columns 1fr
+    .maximize
+      line-height 2.6rem
     .maximize .big
-      font-size 2.2rem
+      font-size 3rem
     .maximize .your
-      font-size 1.8rem
+      font-size 2.7rem
     .maximize .effort
-      font-size 1.4rem
+      font-size 1.8rem
 </style>

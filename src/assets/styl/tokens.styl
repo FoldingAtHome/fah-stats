@@ -1,28 +1,34 @@
-// Neutral dark palette, F@h orange accent. Imported globally via vite
-// additionalData, so every <style lang="stylus"> block sees these.
+// Design tokens. Color tokens alias CSS custom properties so the theme can be
+// switched at runtime; the light/dark values live in base.styl (:root and
+// [data-theme="dark"]). Non-color tokens stay literal. Imported globally via
+// vite additionalData, so every <style lang="stylus"> block sees these.
 
-$bgChrome    = #161616
-$bg          = #1e1e1e
-$bgSurface   = #242424
-$bgRaised    = #2c2c2c
-$bgHover     = #343434
-$bgActive    = #3c3c3c
+$bgChrome    = var(--bgChrome)   // top header bar (dark in both themes)
+$bg          = var(--bg)
+$bgSurface   = var(--bgSurface)
+$bgRaised    = var(--bgRaised)
+$bgHover     = var(--bgHover)
+$bgActive    = var(--bgActive)
 
-$border      = #303030
-$borderInput = #3a3a3a
-$borderHover = #4a4a4a
+$border      = var(--border)
+$borderInput = var(--borderInput)
+$borderHover = var(--borderHover)
 
-$fg          = rgba(255, 255, 255, 0.88)
-$fgMuted     = rgba(255, 255, 255, 0.55)
-$fgDim       = rgba(255, 255, 255, 0.38)
+$fg          = var(--fg)
+$fgMuted     = var(--fgMuted)
+$fgDim       = var(--fgDim)
 
-$accent      = #fe6215   // F@h orange
-$accentHover = #ff7a3d
-$accentDim   = #b14210
-$danger      = #ef5350
-$success     = #66bb6a
-$warning     = #ffa726
-$info        = #42a5f5
+// Header-bar text: always light, since the chrome bar is dark in both themes.
+$chromeFg      = var(--chromeFg)
+$chromeFgMuted = var(--chromeFgMuted)
+
+$accent      = var(--accent)   // F@h orange
+$accentHover = var(--accentHover)
+$accentDim   = var(--accentDim)
+$danger      = var(--danger)
+$success     = var(--success)
+$warning     = var(--warning)
+$info        = var(--info)
 
 $radius      = 4px
 $radiusLg    = 8px
@@ -33,6 +39,8 @@ $gap         = 1em
 
 $fontStack   = system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
 $fontMono    = ui-monospace, SFMono-Regular, Menlo, monospace
+$fontDisplay = "Oswald", $fontStack       // headings / brand (from the old site)
+$fontScript  = "SaintEliaRough", cursive   // the "your" in "Maximize your effort"
 $fontSize    = 14px
 $lineHeight  = 1.5
 

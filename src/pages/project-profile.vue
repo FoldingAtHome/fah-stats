@@ -38,36 +38,34 @@ export default {
 
 <template lang="pug">
 section
-  h1 Project Statistics
-  load-state(:loading="loading" :error="notFound ? null : error" @retry="load")
-    .message-page(v-if="notFound")
-      h2 Project not found
-      router-link(to="/project") Back to projects
-    .project-card(v-else-if="project")
-      p.empty(v-if="isError") The owner has not added a description for this project.
-      template(v-else)
-        .ribbon cause: {{project.cause}}
-        h2 {{project.manager}}
-        p.institution {{project.institution}}
-        h3 Summary
-        .summary
-          .desc(v-if="project.mdescription" v-html="mdescription")
-          img.mthumb(v-if="project.mthumb" :src="'data:image/png;base64,' + project.mthumb" alt="")
-        h3 Details
-        .desc(v-html="description")
-        p(v-if="project.url")
-          a(:href="url" target="_blank" rel="noopener") Project Website
+  .panel
+    h1 Project {{id}}
+    load-state(:loading="loading" :error="notFound ? null : error" @retry="load")
+      .message-page(v-if="notFound")
+        h2 Project not found
+        router-link(to="/project") Back to projects
+      .project-card(v-else-if="project")
+        p.empty(v-if="isError") The owner has not added a description for this project.
+        template(v-else)
+          .ribbon cause: {{project.cause}}
+          h2 {{project.manager}}
+          p.institution {{project.institution}}
+          h3 Summary
+          .summary
+            .desc(v-if="project.mdescription" v-html="mdescription")
+            img.mthumb(v-if="project.mthumb" :src="'data:image/png;base64,' + project.mthumb" alt="")
+          h3 Details
+          .desc(v-html="description")
+          p(v-if="project.url")
+            a(:href="url" target="_blank" rel="noopener") Project Website
 </template>
 
 <style lang="stylus">
 .project-card
-  .ribbon
-    display inline-block
+  .ribbon                        // protrudes past the panel's left edge
+    position relative
+    left -2rem
     background $accentDim
-    color #fff
-    border-radius $radius
-    padding 0.1em 0.6em
-    font-size 0.9em
   .institution
     color $fgMuted
   h3

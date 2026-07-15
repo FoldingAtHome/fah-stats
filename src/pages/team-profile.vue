@@ -5,12 +5,13 @@ import StatTable          from '../components/stat-table.vue'
 import LoadState          from '../components/load-state.vue'
 import RankBadge          from '../components/rank-badge.vue'
 import TeamLogo           from '../components/team-logo.vue'
+import {Trophy}           from 'lucide-vue-next'
 
 const setupUrl = url => url && !url.includes('http') ? 'https://' + url : url
 
 export default {
   name: 'TeamProfile',
-  components: {StatTable, LoadState, RankBadge, TeamLogo},
+  components: {StatTable, LoadState, RankBadge, TeamLogo, Trophy},
   props: {id: {type: String, required: true}},
   data() {return {loading: true, error: null, team: null, members: []}},
   computed: {
@@ -62,8 +63,8 @@ section
       router-link(to="/team") Back to teams
     template(v-else-if="team")
       .profile-card
-        rank-badge(:rank="team.rank" kind="Team")
         .head
+          rank-badge(:rank="team.rank" kind="Team")
           span.avatar
             team-logo(:logo="team.logo")
           div
@@ -72,8 +73,12 @@ section
         .body
           p Team was founded by #[b {{team.founder}}] and has earned #[b {{num(team.score)}}] points by contributing #[b {{num(team.wus)}}] work units.
         .foot
-          a(:href="award('wus')" target="_blank" rel="noopener") Team WUs Award
-          a(:href="award()" target="_blank" rel="noopener") Team Points Award
+          a(:href="award('wus')" target="_blank" rel="noopener")
+            trophy(:size="15")
+            span Team WUs Award
+          a(:href="award()" target="_blank" rel="noopener")
+            trophy(:size="15")
+            span Team Points Award
           a(v-if="team.url" :href="url" target="_blank" rel="noopener") Team Website
           span.id ID: {{team.id}}
       h2 Members

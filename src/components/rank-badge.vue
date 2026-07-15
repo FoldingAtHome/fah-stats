@@ -20,14 +20,5 @@ export default {
 </script>
 
 <template lang="pug">
-span.rank-badge(v-if="tier" :style="{background: tier.color}") Top {{tier.pos}} Ranked {{kind}}
+span.ribbon(v-if="tier" :style="{background: tier.color}") Top {{tier.pos}} Ranked {{kind}}
 </template>
-
-<style lang="stylus">
-.rank-badge
-  color #fff
-  font-size 0.78rem
-  font-weight 600
-  padding 0.2em 0.7em
-  box-shadow 0 1px 3px rgba(0, 0, 0, 0.4)
-</style>

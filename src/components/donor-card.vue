@@ -1,10 +1,11 @@
 <script>
-import {num, ago} from '../format'
-import RankBadge  from './rank-badge.vue'
+import {num, ago}      from '../format'
+import RankBadge       from './rank-badge.vue'
+import {Trophy, Pencil} from 'lucide-vue-next'
 
 export default {
   name: 'DonorCard',
-  components: {RankBadge},
+  components: {RankBadge, Trophy, Pencil},
   props: {
     donor:      {type: Object, required: true},
     hasLinks:   Boolean,
@@ -29,8 +30,8 @@ export default {
     .foot(v-if="editAction")
       button.ghost(@click="editAction") Edit name
   template(v-else)
-    rank-badge(:rank="donor.rank" kind="Donor")
     .head
+      rank-badge(:rank="donor.rank" kind="Donor")
       span.avatar
         svg(viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round")
@@ -42,6 +43,8 @@ export default {
         h2.title
           router-link(v-if="hasLinks" :to="'/donor/name/' + donor.name") {{donor.name}}
           span(v-else) {{donor.name}}
+          button.edit-name(v-if="editAction" @click="editAction" title="Change donor" aria-label="Change donor")
+            pencil(:size="16")
         .rank Rank #[b {{num(donor.rank)}}] of {{num(donor.users)}}
     .body
       p I have earned #[b {{num(donor.score)}}] points by contributing #[b {{num(donor.wus)}}] work units.
@@ -55,8 +58,10 @@ export default {
           h4: router-link(:to="'/team/' + t.team") {{t.name}} ({{t.team}})
           p Earned #[b {{num(t.score)}}] points by contributing #[b {{num(t.wus)}}] work units.
     .foot
-      a(:href="award('wus')" target="_blank" rel="noopener") WUs Award
-      a(:href="award()" target="_blank" rel="noopener") Points Award
-      button.ghost(v-if="editAction" @click="editAction") Edit name
-      span.id ID: {{donor.id}}
+      a(:href="award('wus')" target="_blank" rel="noopener")
+        trophy(:size="15")
+        span WUs Award
+      a(:href="award()" target="_blank" rel="noopener")
+        trophy(:size="15")
+        span Points Award
 </template>

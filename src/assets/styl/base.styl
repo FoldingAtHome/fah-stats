@@ -1,5 +1,59 @@
 @require "./tokens.styl"
 
+// Theme palettes. Light is the default (:root); dark overrides via [data-theme].
+// Light follows the current stats.foldingathome.org scheme: light gray page,
+// white cards, F@h orange accent, and a dark header bar.
+:root
+  --bgChrome    #383838
+  --bg          #f0f2f5
+  --bgSurface   #ffffff
+  --bgRaised    #fafafa
+  --bgHover     #f5f5f5
+  --bgActive    #f0f0f0
+
+  --border      #e8e8e8
+  --borderInput #d9d9d9
+  --borderHover #b0b0b0
+
+  --fg          rgba(0, 0, 0, 0.85)
+  --fgMuted     rgba(0, 0, 0, 0.55)
+  --fgDim       rgba(0, 0, 0, 0.35)
+
+  --chromeFg      rgba(255, 255, 255, 0.92)
+  --chromeFgMuted rgba(255, 255, 255, 0.62)
+
+  --accent      #fe6215
+  --accentHover #ff7a3d
+  --accentDim   #d24e0c
+  --danger      #cf1322
+  --success     #3f8600
+  --warning     #ad8b00
+  --info        #1890ff
+
+[data-theme="dark"]
+  --bgChrome    #161616
+  --bg          #1e1e1e
+  --bgSurface   #242424
+  --bgRaised    #2c2c2c
+  --bgHover     #343434
+  --bgActive    #3c3c3c
+
+  --border      #303030
+  --borderInput #3a3a3a
+  --borderHover #4a4a4a
+
+  --fg          rgba(255, 255, 255, 0.88)
+  --fgMuted     rgba(255, 255, 255, 0.55)
+  --fgDim       rgba(255, 255, 255, 0.38)
+
+  --accent      #fe6215
+  --accentHover #ff7a3d
+  --accentDim   #b14210
+  --danger      #ef5350
+  --success     #66bb6a
+  --warning     #ffa726
+  --info        #42a5f5
+
 *, *::before, *::after
   box-sizing border-box
 
@@ -159,36 +213,58 @@ code, pre
 .change.same
   color $fgDim
 
-// Donor/team profile card — modeled on the original site
-.profile-card
+// Framed content panel (project pages, etc.)
+.panel
   position relative
-  max-width 760px
   background $bgSurface
   border 1px solid $border
   border-radius $radiusLg
-  overflow hidden
-  .rank-badge
+  padding $padLoose
+  > h1:first-child, > h2:first-child
+    margin-top 0
+
+// Corner ribbon that protrudes past the container's left edge with a folded,
+// darker corner beneath — matches the original site's Badge.Ribbon (start).
+// The container sets position (top/bottom); the fold inherits the ribbon color.
+.ribbon
+  display inline-block
+  z-index 2
+  color #fff
+  font-size 0.78rem
+  font-weight 600
+  padding 0.2em 0.7em
+  border-radius 0 $radius $radius 0
+  box-shadow 0 1px 3px rgba(0, 0, 0, 0.3)
+  &::after
+    content ''
     position absolute
-    top 0
+    top 100%
     left 0
-    z-index 2
-    border-bottom-right-radius $radius
-    &::after
-      content ''
-      position absolute
-      top 100%
-      left 0
-      border-style solid
-      border-width 0.35rem 0.35rem 0 0
-      border-color rgba(0, 0, 0, 0.45) transparent transparent transparent
+    width 0.5rem
+    height 0.5rem
+    background-color inherit
+    filter brightness(0.7)
+    clip-path polygon(0 0, 100% 0, 100% 100%)
+
+// Donor/team profile card — modeled on the original site
+.profile-card
+  position relative
+  background $bgSurface
+  border 1px solid $border
+  border-radius $radiusLg
   .head
+    position relative
     display flex
     align-items center
     gap $pad
     padding $padLoose
-    padding-top 2.2rem
     background $bgRaised
     border-bottom 1px solid $border
+    border-radius $radiusLg $radiusLg 0 0
+    .ribbon                     // hangs off the header's bottom-left corner
+      position absolute
+      left -0.5rem
+      bottom -0.55rem
   .avatar
     flex none
     width 3rem
@@ -212,6 +288,16 @@ code, pre
     margin 0
     a
       color $accent
+    .edit-name
+      margin-left 0.4em
+      padding 0.1em
+      background transparent
+      border none
+      color $fgMuted
+      cursor pointer
+      vertical-align middle
+      &:hover
+        color $accent
   .rank
     color $fgMuted
     b
@@ -240,6 +326,10 @@ code, pre
     gap $padLoose
     padding $pad $padLoose
     border-top 1px solid $border
+    a
+      display inline-flex
+      align-items center
+      gap 0.3em
     .id
       color $fgMuted
   .error
