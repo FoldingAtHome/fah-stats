@@ -47,8 +47,7 @@ export default {
 
 <template lang="pug">
 section
-  .panel
-    h1 Project Statistics
-    load-state(:loading="loading" :error="error" :empty="!rows.length" @retry="load")
-      stat-table(:columns="columns" :rows="rows")
+  h1 Project Statistics
+  load-state(:loading="loading" :error="error" :empty="!rows.length" @retry="load")
+    stat-table(:columns="columns" :rows="rows")
 </template>

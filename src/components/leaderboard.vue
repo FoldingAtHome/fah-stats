@@ -41,7 +41,7 @@ export default {
       if (this.tab === 'monthly')
         return [
           {label: 'Rank', width: '5em', align: 'right', format: (v, row) => row._rank},
-          {label: 'Change', width: '6em', align: 'center', slot: 'change'},
+          {label: 'Change', width: '6em', align: 'left', slot: 'change'},
           name, credit, wus
         ]
       return [

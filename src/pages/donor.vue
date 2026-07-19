@@ -15,7 +15,7 @@ export default {
 
 <template lang="pug">
 leaderboard(
-  title="Donors"
+  title="Top Donors"
   name-label="Donor"
   all-endpoint="/user"
   monthly-endpoint="/user/monthly"

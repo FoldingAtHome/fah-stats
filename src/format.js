@@ -7,11 +7,14 @@ export function num(v) {
   return v == null || v === '' ? '' : Number(v).toLocaleString()
 }
 
-// Compact big number for cards: 1234567 -> "1.23M"
+// Compact big number for cards: suffixed values get one decimal (1234567 ->
+// "1.2M"), un-suffixed values (< 1000) get none (42 -> "42").
 export function compact(v) {
   if (v == null || v === '') return ''
+  const n  = Number(v)
+  const dp = Math.abs(n) < 1000 ? 0 : 1
   return new Intl.NumberFormat(undefined,
-    {notation: 'compact', maximumFractionDigits: 2}).format(Number(v))
+    {notation: 'compact', minimumFractionDigits: dp, maximumFractionDigits: dp}).format(n)
 }
 
 // Normalize the API's timestamp shapes to a Date (or null for "never").

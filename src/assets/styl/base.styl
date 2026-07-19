@@ -64,11 +64,14 @@
 ::-webkit-scrollbar
   width 8px
   height 8px
+  background transparent
 ::-webkit-scrollbar-track
   background transparent
 ::-webkit-scrollbar-thumb
-  background $borderInput
+  background transparent
   border-radius 4px
+*:hover::-webkit-scrollbar-thumb
+  background $borderInput
 ::-webkit-scrollbar-thumb:hover
   background $borderHover
 
@@ -104,7 +107,6 @@ button
   color #fff
   border 1px solid $accent
   padding $padTight $pad
-  border-radius $radius
   cursor pointer
   font-family inherit
   font-size inherit
@@ -133,7 +135,6 @@ input, select, textarea
   background $bgRaised
   color $fg
   border 1px solid $borderInput
-  border-radius $radius
   padding $padTight $pad
   font-family inherit
   font-size inherit
@@ -218,7 +219,6 @@ code, pre
   position relative
   background $bgSurface
   border 1px solid $border
-  border-radius $radiusLg
   padding $padLoose
   > h1:first-child, > h2:first-child
     margin-top 0
@@ -251,7 +251,6 @@ code, pre
   position relative
   background $bgSurface
   border 1px solid $border
-  border-radius $radiusLg
   .head
     position relative
     display flex
@@ -260,7 +259,6 @@ code, pre
     padding $padLoose
     background $bgRaised
     border-bottom 1px solid $border
-    border-radius $radiusLg $radiusLg 0 0
     .ribbon                     // hangs off the header's bottom-left corner
       position absolute
       left -0.5rem
@@ -303,6 +301,9 @@ code, pre
     b
       color $fg
   .body
+    display flex
+    flex-direction column
+    gap 1em
     padding $padLoose
     h3
       border-bottom 1px solid $border
@@ -310,15 +311,10 @@ code, pre
       margin-top $padLoose
     b
       color $fg
-    .teams
-      list-style none
-      padding 0
-      max-height 22rem
-      overflow-y auto
-      li
-        margin-bottom $pad
-      h4
-        margin 0.2em 0
+
+    > p, > h3
+      margin 0
+
   .foot
     display flex
     flex-wrap wrap
@@ -344,7 +340,6 @@ code, pre
     width 2rem
     height 2rem
     object-fit contain
-    border-radius $radius
   svg
     width 1.6rem
     height 1.6rem

@@ -19,7 +19,7 @@ export default {
 
 <template lang="pug">
 leaderboard(
-  title="Teams"
+  title="Top Teams"
   name-label="Team"
   all-endpoint="/team"
   monthly-endpoint="/team/monthly"

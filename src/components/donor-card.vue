@@ -1,19 +1,30 @@
 <script>
-import {num, ago}      from '../format'
+import {num, ago, compact} from '../format'
 import RankBadge       from './rank-badge.vue'
+import StatTable       from './stat-table.vue'
 import {Trophy, Pencil} from 'lucide-vue-next'
 
 export default {
   name: 'DonorCard',
-  components: {RankBadge, Trophy, Pencil},
+  components: {RankBadge, StatTable, Trophy, Pencil},
   props: {
     donor:      {type: Object, required: true},
     hasLinks:   Boolean,
     editAction: {type: Function, default: null}
   },
-  computed: {hasError() {return this.donor.status === 'error'}},
+  computed: {
+    hasError() {return this.donor.status === 'error'},
+    teamColumns() {
+      return [
+        {field: 'name', label: 'Team', width: '100%', link: row => '/team/' + row.team,
+          format: (v, row) => v + ' (' + row.team + ')'},
+        {field: 'score', label: 'Points', width: '1%', align: 'right', format: compact, title: num},
+        {field: 'wus', label: 'WUs', width: '1%', align: 'right', format: compact, title: num}
+      ]
+    }
+  },
   methods: {
-    num, ago,
+    num, ago, compact,
     award(type) {
       return 'https://apps.foldingathome.org/awards?user=' + this.donor.id +
         (type ? '&type=' + type : '')
@@ -47,16 +58,14 @@ export default {
             pencil(:size="16")
         .rank Rank #[b {{num(donor.rank)}}] of {{num(donor.users)}}
     .body
-      p I have earned #[b {{num(donor.score)}}] points by contributing #[b {{num(donor.wus)}}] work units.
-      p(v-if="donor.last") My work unit was last recorded #[b {{ago(donor.last)}}].
+      p #[b {{compact(donor.score)}}] points earned by contributing #[b {{compact(donor.wus)}}] work units.
+      p(v-if="donor.last") Last work unit recorded #[b {{ago(donor.last)}}].
       h3 Active clients
-      p #[b {{num(donor.active_50)}}] within 50 days
-      p #[b {{num(donor.active_7)}}] within 7 days
+      .active
+        p #[b {{num(donor.active_7)}}] within 7 days
+        p #[b {{num(donor.active_50)}}] within 50 days
       h3 My Teams
-      ul.teams
-        li(v-for="t in donor.teams" :key="t.team")
-          h4: router-link(:to="'/team/' + t.team") {{t.name}} ({{t.team}})
-          p Earned #[b {{num(t.score)}}] points by contributing #[b {{num(t.wus)}}] work units.
+      stat-table(:columns="teamColumns" :rows="donor.teams || []" layout="auto")
     .foot
       a(:href="award('wus')" target="_blank" rel="noopener")
         trophy(:size="15")
@@ -65,3 +74,21 @@ export default {
         trophy(:size="15")
         span Points Award
 </template>
+
+<style lang="stylus">
+// Auto layout keeps the number columns content-sized; force the flexible Team
+// column to take the slack and ellipsis-truncate (overriding layout-auto's
+// overflow:visible).
+.donor-card .stat-table.layout-auto td:first-child
+  max-width 0
+  overflow hidden
+  text-overflow ellipsis
+.donor-card .active
+  display grid
+  grid-template-columns 1fr 1fr
+  max-width 20em
+  p
+    margin 0
+  p:last-child
+    text-align right
+</style>

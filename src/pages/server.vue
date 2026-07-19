@@ -231,30 +231,45 @@ section.servers
     color $warning
   .danger
     color $danger
-  // Grayscale status shading, matching apps.foldingathome.org/serverstats.
-  // Nested under .stat-table to outrank the table's alt-row striping.
-  .stat-table tbody tr
-    &.srv-as td
-      background #fff
-      font-weight 600
-    &.srv-active td
-      background #eee
-    &.srv-accept td
-      background #aaa
-    &.srv-offline td
-      background #666
+
+  .stat-table
+    thead tr > *
+      background #ccc
+      color #222
+
+    tbody tr
+      &.srv-as td
+        background #fff
+        font-weight 600
+      &.srv-active td
+        background #eee
+      &.srv-accept td
+        background #aaa
+      &.srv-offline td
+        background #666
+
+    tr
+      > td, > th
+        border 1px solid #000
+
   .note
     color $fgMuted
     margin-top $padLoose
 
+
 // Dark-mode equivalents of the status shades (same active→offline progression).
-[data-theme="dark"] .servers .stat-table tbody tr
-  &.srv-as td
-    background $bgSurface
-  &.srv-active td
-    background #333
-  &.srv-accept td
-    background #454545
-  &.srv-offline td
-    background #555
+[data-theme="dark"] .servers .stat-table
+  thead tr > *
+    background #444
+    color #ccc
+
+  tbody tr
+    &.srv-as td
+      background $bgSurface
+    &.srv-active td
+      background #333
+    &.srv-accept td
+      background #454545
+    &.srv-offline td
+      background #555
 </style>

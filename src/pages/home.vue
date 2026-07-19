@@ -22,15 +22,15 @@ section.home
         span.your your
         span.effort EFFORT
     .lede
-      h2 Set up your team
+      h2 Help us cure diseases
       p.
         Help Folding@home study proteins at the smallest scales by recruiting your
         friends and family. Tell them about the Folding@home project, and then join
         or start your own team. The more points your team earns, the more we can
         progress research on diseases like COVID-19, Alzheimer's disease, and cancers!
-  .panel
+  .main
     .col
-      h2 My Donor Profile
+      h2 My Profile
       donor-lookup
     .col
       h2 Top Donors
@@ -68,12 +68,10 @@ section.home
     .effort
       font-weight 700
       font-size 3rem
-  .panel
-    margin-top $padLoose
-    padding $padLoose
-    background $bgSurface
-    border 1px solid $border
-    border-radius $radiusLg
+  .profile-card .body .stat-table
+    max-height 18em
+
+  .main
     display grid
     grid-template-columns 1fr 1fr 1fr
     gap $padLoose
@@ -82,6 +80,7 @@ section.home
       min-width 0
       h2
         margin-top 0
+
   @media (max-width: $bpMobile)
     .panel
       grid-template-columns 1fr

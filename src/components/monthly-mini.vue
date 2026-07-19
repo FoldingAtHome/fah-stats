@@ -13,14 +13,14 @@ export default {
     endpoint:  {type: String, required: true},
     rowKey:    {type: String, required: true},
     link:      {type: Function, required: true},
-    maxHeight: {type: String, default: '60vh'}
+    maxHeight: {type: String, default: '45em'}
   },
   data() {return {loading: true, error: null, rows: []}},
   computed: {
     columns() {
       return [
         {label: 'Rank', width: '4em', align: 'right', format: (v, r) => r._rank},
-        {label: 'Change', width: '5em', align: 'center', slot: 'change'},
+        {label: 'Change', width: '5em', align: 'left', slot: 'change'},
         {field: 'name', label: 'Name', slot: 'name'},
         {field: 'credit', label: 'Points', width: '6em', align: 'right', format: compact, title: num}
       ]

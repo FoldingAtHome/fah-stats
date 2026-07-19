@@ -139,7 +139,6 @@ export default {
 <style lang="stylus">
 .stat-table
   border 1px solid $border
-  border-radius $radius
   overflow hidden
   .scroller
     overflow-x auto
@@ -194,7 +193,6 @@ export default {
     height 24px
     width auto
     vertical-align middle
-    border-radius 2px
 
 @media (max-width: $bpMobile)
   .stat-table .hide-mobile

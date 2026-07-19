@@ -34,7 +34,6 @@ section.tools
 .tools .tool
   background $bgSurface
   border 1px solid $border
-  border-radius $radiusLg
   padding $pad $padLoose $padLoose
   margin-bottom $gap
   h2

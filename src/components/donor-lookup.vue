@@ -54,7 +54,14 @@ export default {
 </template>
 
 <style lang="stylus">
-.donor-lookup .miss
-  color $danger
-  align-self center
+.donor-lookup
+  .donor-card
+    height calc(45em + 2px)
+
+    > div
+      padding 1em
+
+  .miss
+    color $danger
+    align-self center
 </style>

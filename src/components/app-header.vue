@@ -83,7 +83,6 @@ header.app-header
     background transparent
     border none
     padding $padTight
-    border-radius $radius
     color $chromeFgMuted
     cursor pointer
     display inline-flex
