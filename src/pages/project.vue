@@ -15,13 +15,13 @@ export default {
   computed: {
     columns() {
       return [
-        {field: 'id', label: 'Project ID', width: '8em', link: row => '/project/' + row.id},
-        {field: 'ws', label: 'Server IP', width: '12em'},
-        {field: 'atoms', label: 'Atoms', width: '8em', align: 'right', format: num},
-        {field: 'timeout', label: 'Timeout (days)', width: '10em', align: 'right', format: days, hideMobile: true},
-        {field: 'deadline', label: 'Deadline (days)', width: '10em', align: 'right', format: days, hideMobile: true},
-        {field: 'credit', label: 'Base Credit', width: '10em', align: 'right', format: num},
-        {field: 'type', label: 'Core', width: '7em'},
+        {field: 'id', label: 'Project ID', width: '5.5em', link: row => '/project/' + row.id},
+        {field: 'ws', label: 'Server IP', width: '9em', hideMobile: true},
+        {field: 'atoms', label: 'Atoms', width: '6em', align: 'right', format: num},
+        {field: 'timeout', label: 'Timeout (days)', width: '8em', align: 'right', format: days, hideMobile: true},
+        {field: 'deadline', label: 'Deadline (days)', width: '8em', align: 'right', format: days, hideMobile: true},
+        {field: 'credit', label: 'Base Credit', width: '6.5em', align: 'right', format: num},
+        {field: 'type', label: 'Core', width: '4em'},
         {field: 'contact', label: 'Contact', hideMobile: true}
       ]
     }

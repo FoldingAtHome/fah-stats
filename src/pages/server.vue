@@ -110,10 +110,10 @@ export default {
     projectColumns() {
       return [
         {field: 'name', label: 'Project Type'},
-        {field: 'public', label: 'Public Jobs', width: '9em', align: 'right', format: compact, title: num},
-        {field: 'beta', label: 'Beta Jobs', width: '9em', align: 'right', format: compact, title: num},
-        {field: 'total', label: 'Total Jobs', width: '9em', align: 'right', format: compact, title: num},
-        {field: 'assign_rate', label: 'Assign Rate', width: '9em', align: 'right', format: rate}
+        {field: 'public', label: 'Public Jobs', width: '4.5em', align: 'right', format: compact, title: num},
+        {field: 'beta', label: 'Beta Jobs', width: '4.5em', align: 'right', format: compact, title: num},
+        {field: 'total', label: 'Total Jobs', width: '4.5em', align: 'right', format: compact, title: num},
+        {field: 'assign_rate', label: 'Assign Rate', width: '5.5em', align: 'right', format: rate}
       ]
     },
     projectTotals() {
@@ -148,7 +148,7 @@ export default {
     this.load()
   },
   methods: {
-    num,
+    num, compact,
     typeTip(types) {
       return Object.entries(types || {}).map(([t, j]) =>
         t + ' — public: ' + num(j.public) + ', beta: ' + num(j.beta)).join('\n')
@@ -205,16 +205,16 @@ section.servers
           span(v-else) {{row.statusText}}
         template(v-slot:types="{row}")
           span(:title="typeTip(row.types)") {{row.typeList}}
+    p.note Hover Errors/Warnings/Has CS/Project Types for details. Jobs can be both beta and public; available jobs and assign rates are estimates.
     h2 Project Type Stats
-    stat-table(:columns="projectColumns" :rows="projectTypes")
+    stat-table.pt-stats(:columns="projectColumns" :rows="projectTypes" layout="auto")
       template(#summary)
         tr.summary
           td Totals
-          td(style="text-align:right") {{num(projectTotals.public)}}
-          td(style="text-align:right") {{num(projectTotals.beta)}}
-          td(style="text-align:right") {{num(projectTotals.total)}}
-          td(style="text-align:right") {{((projectTotals.rate) * 3600).toLocaleString(undefined, {maximumFractionDigits: 2})}}/hr
-  p.note Hover Errors/Warnings/Has CS/Project Types for details. Jobs can be both beta and public; available jobs and assign rates are estimates.
+          td(style="text-align:right") {{compact(projectTotals.public)}}
+          td(style="text-align:right") {{compact(projectTotals.beta)}}
+          td(style="text-align:right") {{compact(projectTotals.total)}}
+          td(style="text-align:right") {{compact(projectTotals.rate * 3600)}}/hr
 </template>
 
 <style lang="stylus">
@@ -231,6 +231,13 @@ section.servers
     color $warning
   .danger
     color $danger
+
+  // Host column (layout=auto) would otherwise stretch to the longest hostname;
+  // cap it and ellipsis-truncate (overriding layout-auto's overflow:visible).
+  .stat-table td:first-child, .stat-table th:first-child
+    max-width 14em
+    overflow hidden
+    text-overflow ellipsis
 
   .stat-table
     thead tr > *
@@ -255,6 +262,17 @@ section.servers
   .note
     color $fgMuted
     margin-top $padLoose
+
+  // Size Project Type Stats to its content instead of stretching full width
+  // (which made the Project Type column absurdly wide and overflowed headers).
+  .pt-stats table
+    min-width 0
+    width 100%
+
+  // On mobile, wrap headers so the content-sized columns stay narrow enough to fit.
+  @media (max-width: $bpMobile)
+    .pt-stats thead th
+      white-space normal
 
 
 // Dark-mode equivalents of the status shades (same active→offline progression).

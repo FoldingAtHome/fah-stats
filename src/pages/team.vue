@@ -2,12 +2,9 @@
 import {api}       from '../api'
 import Leaderboard from '../components/leaderboard.vue'
 
-const FOUNDER = {field: 'founder', label: 'Founder', hideMobile: true}
-
 export default {
   name: 'Team',
   components: {Leaderboard},
-  data: () => ({extra: [FOUNDER]}),
   created() {document.title = 'Teams — Folding@home'},
   methods: {
     search(pattern) {return api('/team', {q: pattern})},
@@ -27,6 +24,5 @@ leaderboard(
   row-key="team"
   :search="search"
   :link="link"
-  :logo="logo"
-  :extra-columns="extra")
+  :logo="logo")
 </template>

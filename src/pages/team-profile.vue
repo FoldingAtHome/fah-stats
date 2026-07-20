@@ -17,11 +17,11 @@ export default {
   computed: {
     columns() {
       return [
-        {label: 'Rank (team)', width: '7em', align: 'right', format: (v, row, i) => i + 1},
-        {field: 'rank', label: 'Rank (project)', width: '9em', align: 'right', format: num},
+        {label: 'Team #', width: '4.5em', align: 'right', format: (v, row, i) => i + 1},
+        {field: 'rank', label: 'Global #', width: '6em', align: 'right', format: num},
         {field: 'name', label: 'Donor', link: row => '/donor/id/' + row.id},
-        {field: 'score', label: 'Score', width: '9em', align: 'right', format: compact, title: num},
-        {field: 'wus', label: 'WUs', width: '8em', align: 'right', format: compact, title: num, hideMobile: true}
+        {field: 'score', label: 'Score', width: '5.5em', align: 'right', format: compact, title: num},
+        {field: 'wus', label: 'WUs', width: '5.5em', align: 'right', format: compact, title: num, hideMobile: true}
       ]
     },
     notFound() {return this.error && this.error.status === 404},
@@ -30,7 +30,7 @@ export default {
   watch: {id() {this.load()}},
   created() {this.load()},
   methods: {
-    num,
+    num, compact,
     award(type) {
       return 'https://apps.foldingathome.org/awards?team=' + this.team.id +
         (type ? '&type=' + type : '')
@@ -71,16 +71,17 @@ section
             h2.title {{team.name}}
             .rank Rank #[b {{num(team.rank)}}]
         .body
-          p Team was founded by #[b {{team.founder}}] and has earned #[b {{num(team.score)}}] points by contributing #[b {{num(team.wus)}}] work units.
+          .awards
+            a(:href="award('wus')" target="_blank" rel="noopener")
+              trophy(:size="15")
+              span Team WUs Award
+            a(:href="award()" target="_blank" rel="noopener")
+              trophy(:size="15")
+              span Team Points Award
+          p Team was founded by #[b {{team.founder}}] and has earned #[b(:title="num(team.score)") {{compact(team.score)}}] points by contributing #[b(:title="num(team.wus)") {{compact(team.wus)}}] work units.
         .foot
-          a(:href="award('wus')" target="_blank" rel="noopener")
-            trophy(:size="15")
-            span Team WUs Award
-          a(:href="award()" target="_blank" rel="noopener")
-            trophy(:size="15")
-            span Team Points Award
           a(v-if="team.url" :href="url" target="_blank" rel="noopener") Team Website
           span.id ID: {{team.id}}
       h2 Members
-      stat-table(:columns="columns" :rows="members")
+      stat-table(:columns="columns" :rows="members" page-scroll)
 </template>

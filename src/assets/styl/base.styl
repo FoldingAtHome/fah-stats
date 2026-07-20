@@ -263,6 +263,8 @@ code, pre
       position absolute
       left -0.5rem
       bottom -0.55rem
+    > div                        // title/rank block: allow shrink so name truncates
+      min-width 0
   .avatar
     flex none
     width 3rem
@@ -284,6 +286,9 @@ code, pre
     font-size 1.6rem
     font-weight 700
     margin 0
+    overflow hidden
+    text-overflow ellipsis
+    white-space nowrap
     a
       color $accent
     .edit-name
@@ -314,6 +319,15 @@ code, pre
 
     > p, > h3
       margin 0
+  // Award links, placed at the top of the card body (just below the rank ribbon)
+  .awards
+    display flex
+    flex-wrap wrap
+    gap $padLoose
+    a
+      display inline-flex
+      align-items center
+      gap 0.3em
 
   .foot
     display flex

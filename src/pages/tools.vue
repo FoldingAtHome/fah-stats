@@ -38,4 +38,6 @@ section.tools
   margin-bottom $gap
   h2
     margin-top 0
+  @media (max-width: $bpMobile)
+    padding $pad $pad $padLoose   // tighter side padding leaves tables more room
 </style>

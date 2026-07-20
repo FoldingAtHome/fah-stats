@@ -13,7 +13,7 @@ export default {
   computed: {
     columns() {
       return [
-        {field: 'OS', label: 'OS', width: '10em'},
+        {field: 'OS', label: 'OS', width: '6em'},
         ...COLS.map(c => ({field: c, label: c, align: 'right', format: num}))
       ]
     },
@@ -41,7 +41,7 @@ export default {
 </script>
 
 <template lang="pug">
-section
+section.os-stats
   h1 OS Statistics
   load-state(:loading="loading" :error="error" :empty="!rows.length" @retry="load")
     stat-table(:columns="columns" :rows="rows")
@@ -56,4 +56,9 @@ section
 .note
   color $fgMuted
   margin-top $padLoose
+
+// Many narrow numeric columns: let their headers wrap so nothing overflows.
+@media (max-width: $bpMobile)
+  .os-stats .stat-table thead th
+    white-space normal
 </style>

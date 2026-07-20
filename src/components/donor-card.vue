@@ -16,10 +16,10 @@ export default {
     hasError() {return this.donor.status === 'error'},
     teamColumns() {
       return [
-        {field: 'name', label: 'Team', width: '100%', link: row => '/team/' + row.team,
+        {field: 'name', label: 'Team', link: row => '/team/' + row.team,
           format: (v, row) => v + ' (' + row.team + ')'},
-        {field: 'score', label: 'Points', width: '1%', align: 'right', format: compact, title: num},
-        {field: 'wus', label: 'WUs', width: '1%', align: 'right', format: compact, title: num}
+        {field: 'score', label: 'Points', width: '5.5em', align: 'right', format: compact, title: num},
+        {field: 'wus', label: 'WUs', width: '5.5em', align: 'right', format: compact, title: num}
       ]
     }
   },
@@ -58,31 +58,24 @@ export default {
             pencil(:size="16")
         .rank Rank #[b {{num(donor.rank)}}] of {{num(donor.users)}}
     .body
-      p #[b {{compact(donor.score)}}] points earned by contributing #[b {{compact(donor.wus)}}] work units.
+      .awards
+        a(:href="award('wus')" target="_blank" rel="noopener")
+          trophy(:size="15")
+          span WUs Award
+        a(:href="award()" target="_blank" rel="noopener")
+          trophy(:size="15")
+          span Points Award
+      p #[b(:title="num(donor.score)") {{compact(donor.score)}}] points earned by contributing #[b(:title="num(donor.wus)") {{compact(donor.wus)}}] work units.
       p(v-if="donor.last") Last work unit recorded #[b {{ago(donor.last)}}].
       h3 Active clients
       .active
         p #[b {{num(donor.active_7)}}] within 7 days
         p #[b {{num(donor.active_50)}}] within 50 days
       h3 My Teams
-      stat-table(:columns="teamColumns" :rows="donor.teams || []" layout="auto")
-    .foot
-      a(:href="award('wus')" target="_blank" rel="noopener")
-        trophy(:size="15")
-        span WUs Award
-      a(:href="award()" target="_blank" rel="noopener")
-        trophy(:size="15")
-        span Points Award
+      stat-table(:columns="teamColumns" :rows="donor.teams || []")
 </template>
 
 <style lang="stylus">
-// Auto layout keeps the number columns content-sized; force the flexible Team
-// column to take the slack and ellipsis-truncate (overriding layout-auto's
-// overflow:visible).
-.donor-card .stat-table.layout-auto td:first-child
-  max-width 0
-  overflow hidden
-  text-overflow ellipsis
 .donor-card .active
   display grid
   grid-template-columns 1fr 1fr

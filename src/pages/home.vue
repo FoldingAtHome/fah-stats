@@ -82,7 +82,7 @@ section.home
         margin-top 0
 
   @media (max-width: $bpMobile)
-    .panel
+    .main
       grid-template-columns 1fr
     .maximize
       line-height 2.6rem

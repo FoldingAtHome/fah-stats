@@ -36,16 +36,16 @@ export default {
   computed: {
     columns() {
       const name = {field: 'name', label: this.nameLabel, slot: 'name'}
-      const credit = {field: 'credit', label: 'Credit', width: '9em', align: 'right', format: compact, title: num}
-      const wus = {field: 'wus', label: 'WUs', width: '8em', align: 'right', format: compact, title: num, hideMobile: true}
+      const credit = {field: 'credit', label: 'Credit', width: '5.5em', align: 'right', format: compact, title: num}
+      const wus = {field: 'wus', label: 'WUs', width: '5.5em', align: 'right', format: compact, title: num, hideMobile: true}
       if (this.tab === 'monthly')
         return [
-          {label: 'Rank', width: '5em', align: 'right', format: (v, row) => row._rank},
-          {label: 'Change', width: '6em', align: 'left', slot: 'change'},
+          {label: 'Rank', width: '3.75em', align: 'right', format: (v, row) => row._rank},
+          {label: 'Change', width: '4.5em', align: 'left', slot: 'change'},
           name, credit, wus
         ]
       return [
-        {label: 'Rank', width: '5em', align: 'right', format: (v, row, i) => row.rank ?? i + 1},
+        {label: 'Rank', width: '3.75em', align: 'right', format: (v, row, i) => row.rank ?? i + 1},
         name, credit, wus, ...this.extraColumns
       ]
     }
@@ -102,9 +102,8 @@ section
       input(v-model="query" :placeholder="searchLabel")
       button(type="submit") Search
       button.ghost(v-if="searched" type="button" @click="clearSearch") Clear
-    span.count {{rows.length}}
   load-state(:loading="loading" :error="error" :empty="!rows.length" @retry="load")
-    stat-table(:columns="columns" :rows="rows")
+    stat-table(:columns="columns" :rows="rows" page-scroll)
       template(v-slot:name="{row}")
         team-logo(v-if="logo" :logo="logo(row)" :fallback="false")
         router-link(:to="link(row)") {{row.name}}

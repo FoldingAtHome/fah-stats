@@ -26,6 +26,7 @@ export default {
     rowKey:      {type: [String, Function], default: null},
     defaultSort: {type: Object, default: null},   // {field, dir}
     virtual:     {type: Boolean, default: true},
+    pageScroll:  {type: Boolean, default: false}, // virtualize against the page instead of an inner scroll box
     maxHeight:   {type: String, default: null},   // scrollable area height
     rowClass:    {type: Function, default: null},  // row => class
     layout:      {type: String, default: 'fixed'}  // 'fixed' | 'auto' (size to content)
@@ -35,10 +36,14 @@ export default {
       sortField:      this.defaultSort?.field ?? null,
       sortDir:        this.defaultSort?.dir ?? 1,
       scrollTop:      0,
-      viewportHeight: 0
+      viewportHeight: 0,
+      isMobile:       false
     }
   },
   computed: {
+    // Drop hideMobile columns entirely on mobile — not just display:none them,
+    // which would leave table-layout:fixed reserving a phantom column width.
+    cols() {return this.isMobile ? this.columns.filter(c => !c.hideMobile) : this.columns},
     sortedRows() {
       if (!this.sortField) return this.rows
       const f = this.sortField, dir = this.sortDir
@@ -73,15 +78,44 @@ export default {
     }
   },
   mounted() {
-    this.measure()
+    // In page-scroll mode the enclosing scroll region drives virtualization;
+    // otherwise the inner .scroller does.
+    this.scrollEl = this.pageScroll ? this.findScrollParent() : this.$refs.scroller
+    this.scrollEl.addEventListener('scroll', this.onScroll, {passive: true})
     window.addEventListener('resize', this.measure)
+    this.mq = window.matchMedia('(max-width: 700px)')   // == $bpMobile
+    this.isMobile = this.mq.matches
+    this.onMq = e => {this.isMobile = e.matches}
+    this.mq.addEventListener('change', this.onMq)
+    this.measure()
   },
-  beforeUnmount() {window.removeEventListener('resize', this.measure)},
+  beforeUnmount() {
+    if (this.scrollEl) this.scrollEl.removeEventListener('scroll', this.onScroll)
+    if (this.mq) this.mq.removeEventListener('change', this.onMq)
+    window.removeEventListener('resize', this.measure)
+  },
   methods: {
-    measure() {
-      if (this.$refs.scroller) this.viewportHeight = this.$refs.scroller.clientHeight
+    findScrollParent() {
+      let el = this.$el && this.$el.parentElement
+      while (el && el !== document.body) {
+        const oy = getComputedStyle(el).overflowY
+        if (oy === 'auto' || oy === 'scroll') return el
+        el = el.parentElement
+      }
+      return document.scrollingElement || document.documentElement
     },
-    onScroll(e) {this.scrollTop = e.target.scrollTop},
+    measure() {
+      if (!this.scrollEl) return
+      this.viewportHeight = this.scrollEl.clientHeight
+      this.updateScroll()
+    },
+    updateScroll() {
+      if (this.pageScroll) {
+        const top = this.scrollEl.getBoundingClientRect().top
+        this.scrollTop = Math.max(0, top - this.$refs.scroller.getBoundingClientRect().top)
+      } else this.scrollTop = this.scrollEl.scrollTop
+    },
+    onScroll() {this.updateScroll()},
     isSortable(col) {return col.field != null && col.sortable !== false},
     onSort(col) {
       if (!this.isSortable(col)) return
@@ -109,21 +143,21 @@ export default {
 </script>
 
 <template lang="pug">
-.stat-table(:class="{virtual: useVirtual, 'layout-auto': layout === 'auto'}")
-  .scroller(ref="scroller" :style="scrollerStyle" @scroll="onScroll")
+.stat-table(:class="{virtual: useVirtual, 'layout-auto': layout === 'auto', 'page-scroll': pageScroll}")
+  .scroller(ref="scroller" :style="scrollerStyle")
     table
       thead
         tr
-          th(v-for="col in columns" :key="col.field || col.label"
+          th(v-for="col in cols" :key="col.field || col.label"
              :class="[colClass(col), {sortable: isSortable(col), active: sortField === col.field}]"
              :style="colStyle(col)" @click="onSort(col)")
             span {{col.label}}
             span.sort(v-if="isSortable(col) && sortField === col.field") {{sortDir > 0 ? '▲' : '▼'}}
       tbody
         tr.spacer(v-if="useVirtual && topPad")
-          td(:colspan="columns.length" :style="{height: topPad + 'px'}")
+          td(:colspan="cols.length" :style="{height: topPad + 'px'}")
         tr(v-for="r in visibleRows" :key="keyOf(r)" :class="[{alt: r.index % 2}, rowClass ? rowClass(r.row) : null]")
-          td(v-for="col in columns" :key="col.field || col.label"
+          td(v-for="col in cols" :key="col.field || col.label"
              :class="colClass(col)" :style="colStyle(col)")
             slot(v-if="col.slot" :name="col.slot" :row="r.row" :value="raw(col, r.row)" :index="r.index")
             router-link(v-else-if="col.link" :to="col.link(r.row)") {{cell(col, r)}}
@@ -131,7 +165,7 @@ export default {
             span(v-else-if="col.title" :title="col.title(raw(col, r.row), r.row)") {{cell(col, r)}}
             template(v-else) {{cell(col, r)}}
         tr.spacer(v-if="useVirtual && bottomPad")
-          td(:colspan="columns.length" :style="{height: bottomPad + 'px'}")
+          td(:colspan="cols.length" :style="{height: bottomPad + 'px'}")
       tfoot(v-if="$slots.summary")
         slot(name="summary")
 </template>
@@ -145,6 +179,9 @@ export default {
     overflow-y auto
   &.virtual .scroller
     max-height 70vh
+  &.page-scroll .scroller
+    max-height none
+    overflow visible
   table
     table-layout fixed
   &.layout-auto table

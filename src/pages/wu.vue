@@ -2,7 +2,7 @@
 // Work-unit status lookup by Project/Run/Clone/Gen. The PRCG field accepts a
 // pasted log string (e.g. "Project:10433 (Run 1, Clone 1, Gen 1)").
 import {api}         from '../api'
-import {num, toDate} from '../format'
+import {num, compact, toDate} from '../format'
 import StatTable     from '../components/stat-table.vue'
 import LoadState     from '../components/load-state.vue'
 
@@ -18,19 +18,21 @@ export default {
     columns() {
       return [
         {field: 'user', label: 'User', link: row => '/tools?q=' + encodeURIComponent(row.user)},
-        {field: 'team', label: 'Team', width: '7em', align: 'right', link: row => '/team/' + row.team},
-        {field: 'cpuid', label: 'CPUID', width: '14em', hideMobile: true},
-        {field: 'credit', label: 'Credit', width: '8em', align: 'right', format: num},
-        {field: 'assign_time', label: 'Assigned', width: '12em', format: this.dt, hideMobile: true},
-        {field: 'log_time', label: 'Returned', width: '12em', format: this.dt, hideMobile: true},
-        {field: 'credit_time', label: 'Credited', width: '12em', format: this.dt, hideMobile: true},
-        {field: 'days', label: 'Days', width: '6em', align: 'right'},
-        {field: 'code', label: 'Code', width: '6em'}
+        {field: 'team', label: 'Team', width: '5.5em', align: 'right', link: row => '/team/' + row.team},
+        {field: 'cpuid', label: 'CPUID', width: '12em', hideMobile: true},
+        {field: 'credit', label: 'Credit', width: '4.5em', align: 'right', format: compact, title: num},
+        {field: 'assign_time', label: 'Assigned', width: '11em', format: this.dt, hideMobile: true},
+        {field: 'log_time', label: 'Returned', width: '11em', format: this.dt, hideMobile: true},
+        {field: 'credit_time', label: 'Credited', width: '11em', format: this.dt, hideMobile: true},
+        {field: 'days', label: 'Days', width: '4em', align: 'right',
+          format: v => v == null || v === '' ? '' : Number(v).toLocaleString(undefined, {maximumFractionDigits: 2})},
+        {field: 'code', label: 'Code', width: '6.5em'}
       ]
     }
   },
   methods: {
-    dt(v) {const d = toDate(v); return d ? d.toLocaleString() : ''},
+    // 24-hour UTC, no comma: "2025-01-16 03:01:09"
+    dt(v) {const d = toDate(v); return d ? d.toISOString().slice(0, 19).replace('T', ' ') : ''},
     parsePRCG() {
       const m = PRCG.exec(this.prcg)
       if (m) {[, this.p, this.r, this.c, this.g] = m; this.prcg = ''}

@@ -10,7 +10,7 @@ const nav = [
   {to: '/os',         label: 'OS'},
   {to: '/server',     label: 'Servers'},
   {to: '/tools',      label: 'Tools'},
-  {to: '/credit-log', label: 'Credit Log'}
+  {to: '/credit-log', label: 'Credits'}
 ]
 
 export default {
@@ -96,6 +96,10 @@ header.app-header
       flex-direction column
       align-items flex-start
       gap $pad
+    .nav                         // full width so items wrap instead of overflowing
+      width 100%
+      gap $pad
+      font-size 0.85rem
     .theme-toggle
       position absolute
       top $pad
