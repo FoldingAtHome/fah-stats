@@ -29,8 +29,11 @@ export function clearCache() {cache.clear()}
 export async function api(path, params) {
   let url = path.startsWith('http') ? path : apiBase + path   // absolute = AS hosts
   if (params) {
+    // URLSearchParams encodes a space as '+', which the API reads as a literal
+    // '+'.  A literal '+' is already encoded as %2B, so every '+' is a space.
     const q = new URLSearchParams(Object.entries(params)
       .filter(([, v]) => v != null && v !== '')).toString()
+      .replace(/\+/g, '%20')
     if (q) url += (path.includes('?') ? '&' : '?') + q
   }
 
